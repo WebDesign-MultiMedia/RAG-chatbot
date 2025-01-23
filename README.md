@@ -1,3 +1,10 @@
+[Desktop]
+![image](https://github.com/user-attachments/assets/d8386fd2-2f1f-433b-84ce-2bc01d0f5bea)
+
+[Mobile]
+![image](https://github.com/user-attachments/assets/5bd13e1e-2515-46eb-9ea6-c11e3f868e7b)
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
 ## Getting Started

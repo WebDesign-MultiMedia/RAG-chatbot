@@ -6,20 +6,36 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "seed": "ts-node ./scripts/loadDb.ts",
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^1.1.1",
+    "@datastax/astra-db-ts": "^1.5.0",
+    "@langchain/community": "^0.3.26",
+    "@langchain/core": "^0.3.33",
+    "ai": "^3.4.33",
+    "dotenv": "^16.4.7",
+    "langchain": "^0.3.12",
+    "next": "^15.1.6",
+    "nextjs-f1gpt": "file:",
+    "openai": "^4.41.0",
+    "puppeteer": "^24.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.1.5"
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
+    "@eslint/eslintrc": "^3.2.0",
+    "@types/node": "^20.17.14",
+    "@types/puppeteer": "^7.0.4",
+    "@types/react": "^19.0.7",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.5",
-    "@eslint/eslintrc": "^3"
+    "typescript": "^5.7.3"
+  },
+  "overrides": {
+    "punycode": "2.3.1"
   }
 }

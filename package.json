@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-f1gpt",
+  "name": "nyc-gpt",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^1.1.1",
     "@datastax/astra-db-ts": "^1.5.0",
     "@langchain/community": "^0.3.26",
     "@langchain/core": "^0.3.33",
@@ -18,7 +17,6 @@
     "dotenv": "^16.4.7",
     "langchain": "^0.3.12",
     "next": "^15.1.6",
-    "nextjs-f1gpt": "file:",
     "openai": "^4.41.0",
     "puppeteer": "^24.1.0",
     "react": "^19.0.0",

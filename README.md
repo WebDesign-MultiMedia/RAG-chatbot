@@ -1,49 +1,61 @@
-[Desktop]
+# NYC GPT
 
-![image](https://github.com/user-attachments/assets/1f6396ae-3100-45fd-9db4-eb272dd0c22a)
+A retrieval-augmented AI chatbot with real New York City attitude. It answers questions about the five boroughs — the subway, the bridges, the neighborhoods, the history — by pulling context from a vector database and streaming a GPT-4o answer back to you.
 
-[Mobile]
+Built with Next.js (App Router), the Vercel AI SDK, OpenAI, and DataStax AstraDB.
 
-![image](https://github.com/user-attachments/assets/5bd13e1e-2515-46eb-9ea6-c11e3f868e7b)
+## How it works
 
+1. `scripts/loadDb.ts` scrapes a set of NYC-related Wikipedia pages, splits the text into chunks, embeds each chunk with OpenAI, and stores the vectors in an AstraDB collection.
+2. `app/api/chat/route.ts` embeds the user's latest message, does a vector similarity search against that collection, and stuffs the top matches into a system prompt as context for GPT-4o.
+3. `app/page.tsx` is the chat UI — a taxi-yellow-and-black interface with borough prompt suggestions, backed by `useChat` from the `ai` package for streaming responses.
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+## Getting started
 
-## Getting Started
+### 1. Install dependencies
 
-First, run the development server:
+```bash
+npm install
+```
+
+### 2. Configure environment variables
+
+Copy the example file and fill in your own keys:
+
+```bash
+cp .env.local.example .env.local
+```
+
+| Variable | Description |
+| --- | --- |
+| `OPENAI_API_KEY` | OpenAI API key, used for embeddings and chat completions |
+| `ASTRA_DB_NAMESPACE` | AstraDB keyspace (defaults to `default_keyspace`) |
+| `ASTRA_DB_COLLECTION` | Name of the vector collection to create/use, e.g. `nyc_gpt` |
+| `ASTRA_DB_API_ENDPOINT` | Your AstraDB database's API endpoint |
+| `ASTRA_DB_APPLICATION_TOKEN` | AstraDB application token |
+
+You'll need an [OpenAI account](https://platform.openai.com) and a free [AstraDB database](https://astra.datastax.com) with vector search enabled.
+
+### 3. Seed the vector database
+
+This creates the collection and scrapes/embeds the NYC source pages defined in `scripts/loadDb.ts`:
+
+```bash
+npm run seed
+```
+
+### 4. Run the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) and start asking about the boroughs.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+- `npm run dev` — start the local dev server
+- `npm run build` — production build
+- `npm run start` — run the production build
+- `npm run seed` — (re)populate the AstraDB vector collection
+- `npm run lint` — run ESLint

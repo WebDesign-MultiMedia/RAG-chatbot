@@ -17,13 +17,23 @@ const {
 
 
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
-const f1Data = [
-    'https://en.wikipedia.org/wiki/Formula_One',
-    'https://en.wikipedia.org/wiki/Car',
-    'https://en.wikipedia.org/wiki/Honda',
+const nycData = [
     'https://en.wikipedia.org/wiki/New_York_City',
     'https://en.wikipedia.org/wiki/Boroughs_of_New_York_City',
-    ''
+    'https://en.wikipedia.org/wiki/Manhattan',
+    'https://en.wikipedia.org/wiki/Brooklyn',
+    'https://en.wikipedia.org/wiki/Queens',
+    'https://en.wikipedia.org/wiki/The_Bronx',
+    'https://en.wikipedia.org/wiki/Staten_Island',
+    'https://en.wikipedia.org/wiki/History_of_New_York_City',
+    'https://en.wikipedia.org/wiki/Culture_of_New_York_City',
+    'https://en.wikipedia.org/wiki/New_York_City_Subway',
+    'https://en.wikipedia.org/wiki/Times_Square',
+    'https://en.wikipedia.org/wiki/Central_Park',
+    'https://en.wikipedia.org/wiki/Statue_of_Liberty',
+    'https://en.wikipedia.org/wiki/Brooklyn_Bridge',
+    'https://en.wikipedia.org/wiki/Empire_State_Building',
+    'https://en.wikipedia.org/wiki/One_World_Trade_Center',
 ];
 
 const client = new DataAPIClient(ASTRA_DB_APPLICATION_TOKEN);
@@ -52,7 +62,7 @@ const createCollection = async (similarityMetric: SimilarityMetric = "dot_produc
 
 const loadSampleData = async () => {
     const collection = await db.collection(ASTRA_DB_COLLECTION);
-    for await (const url of f1Data) {
+    for await (const url of nycData) {
         const content = await scrapePage(url);
         const chunks = await splitter.splitText(content);
         for await (const chunk of chunks) {

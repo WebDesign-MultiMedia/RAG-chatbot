@@ -1,6 +1,5 @@
-
 import OpenAI from "openai";
- import { OpenAIStream, StreamingTextResponse } from "ai";
+import { OpenAIStream, StreamingTextResponse } from "ai";
 import { DataAPIClient } from '@datastax/astra-db-ts';
 
 const {
@@ -11,15 +10,17 @@ const {
     OPENAI_API_KEY,
 } = process.env;
 
-const openai = new OpenAI({
-    apiKey: OPENAI_API_KEY
-})
-
-const client = new DataAPIClient(ASTRA_DB_APPLICATION_TOKEN)
-const db = client.db(ASTRA_DB_API_ENDPOINT, {namespace: ASTRA_DB_NAMESPACE})
-
 export async function POST(req: Request){
     try {
+        if (!OPENAI_API_KEY) {
+            return new Response(
+                "Server is missing OPENAI_API_KEY. Add it to your .env.local file.",
+                { status: 500 }
+            )
+        }
+
+        const openai = new OpenAI({ apiKey: OPENAI_API_KEY })
+
         const {messages} = await req.json()
         const latestMessage = messages[messages?.length - 1]?.content 
 
@@ -32,6 +33,12 @@ export async function POST(req: Request){
         let docContext = "";
 
         try {
+            if (!ASTRA_DB_APPLICATION_TOKEN || !ASTRA_DB_API_ENDPOINT || !ASTRA_DB_COLLECTION) {
+                throw new Error("AstraDB environment variables are not configured")
+            }
+
+            const client = new DataAPIClient(ASTRA_DB_APPLICATION_TOKEN)
+            const db = client.db(ASTRA_DB_API_ENDPOINT, { namespace: ASTRA_DB_NAMESPACE })
             const collection = await db.collection(ASTRA_DB_COLLECTION)
             const cursor = collection.find(null, {
                 sort: {
@@ -47,13 +54,13 @@ export async function POST(req: Request){
             docContext = JSON.stringify(docsMap)
 
         } catch (err) {
-        console.log("Error quering db...");
-        docContext = ""
-        }   
+            console.log("Error querying db...", err);
+            docContext = ""
+        }
 
         const template = {
             role: "system",
-            content: `You are an AI assistant who knows everything about Formula One
+            content: `You are NYC GPT, a streetwise AI assistant who knows everything about New York City — the five boroughs, the subway, the food, the history, the culture, all of it. Answer like a local: confident, direct, a little bit of that NY energy, but always accurate and helpful. If the context below doesn't have the answer, just use what you already know about NYC and say so.
             ---------------------
             ${docContext}
             END CONTEXT
@@ -62,7 +69,7 @@ export async function POST(req: Request){
         }
 
        const response = await openai.chat.completions.create({
-            model: "gpt-4",
+            model: "gpt-4o",
             stream: true,
             messages: [template, ...messages]
         })

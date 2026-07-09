@@ -24,12 +24,12 @@ const Home = () => {
 
     return(
         <main>
-            <Image className="img" src={f1GPTLogo} width={250} alt="F1GPT Logo"/>
+            <Image className="img" src={f1GPTLogo} width={250} alt="NYC GPT Logo"/>
 
             <section className={noMessages ? "" : "populated"}>
                 {noMessages ? (
                     <>
-                    <p className="start-text">YERRRRRRR Testing testing  .....</p>
+                    <p className="start-text">Yo, I&apos;m NYC GPT — ask me anything about the five boroughs.</p>
                     <br/>
                     <PromptSuggestionRow onPromptClick={handlePrompt}/>
                     </>

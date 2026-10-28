@@ -5,7 +5,8 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
 type SimilarityMetric = "dot_product" | "cosine" | "euclidean";
 
-import "dotenv/config";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 
 const {
     ASTRA_DB_NAMESPACE,

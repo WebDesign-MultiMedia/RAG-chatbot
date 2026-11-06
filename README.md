@@ -1,8 +1,18 @@
 # NYC GPT
 
-A retrieval-augmented (RAG) chatbot with real New York City attitude. Ask it about the five boroughs, the subway, the bridges, the parks or the history. It pulls the most relevant passages from a vector database of NYC Wikipedia articles and streams back a grounded answer.
+[![Live demo](https://img.shields.io/badge/live%20demo-nyc--gpt.vercel.app-f5c518?style=flat-square&logo=vercel&logoColor=black&labelColor=000)](https://nyc-gpt.vercel.app)
+[![CI](https://github.com/WebDesign-MultiMedia/RAG-chatbot/actions/workflows/ci.yml/badge.svg)](https://github.com/WebDesign-MultiMedia/RAG-chatbot/actions/workflows/ci.yml)
+![Next.js 15](https://img.shields.io/badge/Next.js-15-000?style=flat-square&logo=nextdotjs)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=flat-square&logo=typescript&logoColor=white)
 
-**Live demo: [nyc-gpt.vercel.app](https://nyc-gpt.vercel.app)**
+A retrieval-augmented generation (RAG) chatbot with real New York City attitude. Ask it about the five boroughs, the subway, the bridges, the parks or the history. It pulls the most relevant passages from a vector database of NYC Wikipedia articles and streams back a grounded answer.
+
+## Links
+
+- **Try it live:** [https://nyc-gpt.vercel.app](https://nyc-gpt.vercel.app)
+- **Source code:** [github.com/WebDesign-MultiMedia/RAG-chatbot](https://github.com/WebDesign-MultiMedia/RAG-chatbot)
+
+**Try asking:** "How old is the NYC subway?", "How was the Brooklyn Bridge built?", "Why is Queens so diverse?" or "What makes Central Park special?"
 
 ![NYC GPT answering "What makes Central Park special?"](docs/screenshot.png)
 
@@ -37,6 +47,20 @@ Chat (per ask):  question ─▶ embed ─▶ vector search in AstraDB (top 10) 
 3. **Embed.** Chunks are embedded in batches with OpenAI `text-embedding-3-small` and written to AstraDB with `insertMany`. Each chunk has a stable ID, so re-runs never create duplicates.
 4. **Vector search.** For each question, `app/api/chat/route.ts` embeds the latest message and pulls the 10 nearest chunks from AstraDB.
 5. **GPT stream.** The chunks go into the NYC GPT system prompt, and the answer streams token by token to the `useChat` UI. If vector search fails (for example, while a free-tier database is waking up), the bot still answers from general knowledge and logs a server-side warning.
+
+## Project structure
+
+```
+app/
+├── api/chat/route.ts      # RAG endpoint: embed → vector search → GPT stream, plus limits
+├── components/            # Bubble, LoadingBubbles, PromptSuggestionRow/Button
+├── assets/                # skyline background and NYC logo
+├── global.css             # all styling, including the mobile breakpoints
+├── layout.tsx             # fonts, metadata, viewport, background
+└── page.tsx               # chat UI (useChat)
+scripts/loadDb.ts          # scrape, chunk, embed and seed AstraDB
+docs/                      # README screenshots
+```
 
 ## Stack
 

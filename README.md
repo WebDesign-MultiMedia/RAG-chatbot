@@ -6,6 +6,25 @@ A retrieval-augmented (RAG) chatbot with real New York City attitude. Ask it abo
 
 ![NYC GPT answering "What makes Central Park special?"](docs/screenshot.png)
 
+<table>
+  <tr>
+    <td width="68%"><img src="docs/screenshot-home.png" alt="NYC GPT welcome screen on desktop with suggestion cards for each borough and the subway" /></td>
+    <td width="32%"><img src="docs/screenshot-mobile.png" alt="NYC GPT welcome screen on a phone with two-column suggestion cards" /></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Desktop welcome screen</sub></td>
+    <td align="center"><sub>Mobile (390 × 844)</sub></td>
+  </tr>
+</table>
+
+## Interface
+
+- **NYC look:** black glass panel over the skyline photo, taxi-yellow accents and a yellow-and-black taxi checker strip, set in Bebas Neue and Inter (loaded with `next/font`).
+- **Welcome screen:** six suggestion cards (one per borough, plus the subway), each with a badge and a ready-to-send question.
+- **Chat:** streaming answers with an assistant avatar and typing indicator, auto-scroll to the newest message, a friendly error bubble if a request fails, and a character counter for the 500-character limit.
+- **Responsive:** full-screen layout on phones with notch and home-bar safe areas, a 16px input so iOS Safari doesn't zoom on focus, two-column cards, and tighter layouts for short screens and landscape. Checked at 320, 375, 390 and 430 px wide, in landscape and on iPad.
+- **Accessible:** labelled input and Send button, `aria-live` conversation, visible focus rings, hover effects only on devices that can hover, and animations turned off for `prefers-reduced-motion`.
+
 ## Architecture
 
 ```
@@ -21,7 +40,7 @@ Chat (per ask):  question ─▶ embed ─▶ vector search in AstraDB (top 10) 
 
 ## Stack
 
-- **Next.js 15** (App Router) and **TypeScript**
+- **Next.js 15** (App Router), **React 19** and **TypeScript**; plain CSS with no UI framework
 - **Vercel AI SDK** (`ai` v3: `useChat`, `OpenAIStream`)
 - **OpenAI**: `gpt-4o-mini` for chat and `text-embedding-3-small` for embeddings (both configurable)
 - **LangChain.js**: Puppeteer web loader and recursive text splitter

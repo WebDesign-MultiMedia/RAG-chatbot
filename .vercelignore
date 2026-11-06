@@ -1,0 +1,5 @@
+# Never upload local secrets or build output from CLI deploys
+.env*
+!.env.local.example
+node_modules
+.next

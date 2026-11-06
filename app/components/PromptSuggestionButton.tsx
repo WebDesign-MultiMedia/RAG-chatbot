@@ -1,6 +1,11 @@
-const PromptSuggestionButton = ({text, onClick }) =>{
+type PromptSuggestionButtonProps = {
+    text: string
+    onClick: () => void
+}
+
+const PromptSuggestionButton = ({text, onClick }: PromptSuggestionButtonProps) =>{
     return(
-        <button className="prompt-suggestion-button" onClick={onClick}>
+        <button type="button" className="prompt-suggestion-button" onClick={onClick}>
             {text}
         </button>
     )

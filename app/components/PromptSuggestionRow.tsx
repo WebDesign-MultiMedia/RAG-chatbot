@@ -1,6 +1,10 @@
 import PromptSuggestionButton  from "./PromptSuggestionButton"
 
-const PromptSuggestionRow = ({onPromptClick}) =>{
+type PromptSuggestionRowProps = {
+    onPromptClick: (prompt: string) => void
+}
+
+const PromptSuggestionRow = ({onPromptClick}: PromptSuggestionRowProps) =>{
 
     const prompts = [
         "Bronx",

@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Placeholders so the build never needs real secrets
+      OPENAI_API_KEY: sk-ci-placeholder
+      ASTRA_DB_API_ENDPOINT: https://ci-placeholder.apps.astra.datastax.com
+      ASTRA_DB_APPLICATION_TOKEN: AstraCS:ci-placeholder
+      ASTRA_DB_NAMESPACE: default_keyspace
+      ASTRA_DB_COLLECTION: nyc_gpt
+      # Puppeteer is only used by the seed script; skip the Chromium download
+      PUPPETEER_SKIP_DOWNLOAD: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
